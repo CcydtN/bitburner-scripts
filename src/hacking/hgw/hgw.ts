@@ -87,7 +87,7 @@ export async function main(ns:NS) {
     on_going = [...on_going.filter(pid=>ns.isRunning(pid)), ...process_id]
 
     last_duration = duration
-    await ns.sleep(GAP)
+    await ns.sleep(GAP * 4)
   }
 }
 
