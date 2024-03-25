@@ -16,6 +16,7 @@ export namespace resource{
     sys.ns.printf("Try run script, %s", script)
     const pid = sys.ns.run(script)
     if (pid === 0) {
+      sys.ns.printf("%s Fail", script)
       sys.send_msg(Event.start_script, script, ...args)
       return
     }
