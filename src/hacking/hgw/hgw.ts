@@ -1,6 +1,6 @@
 import type { NS, NetscriptPort } from '@ns';
 import { hgw_dispatch } from '/util/dispatcher';
-import { GAP, get_info, type Info } from '/hacking/hwgw/common';
+import { GAP, get_info, type Info } from '/hacking/hgw/common';
 
 enum Action {
   Hack = 0,

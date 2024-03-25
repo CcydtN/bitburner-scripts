@@ -1,5 +1,5 @@
 import type { NS } from "@ns";
-import { get_info } from "/hacking/hwgw/common";
+import { get_info } from "/hacking/hgw/common";
 
 export async function main(ns: NS): Promise<void> {
   if (ns.args.length!==2){return}

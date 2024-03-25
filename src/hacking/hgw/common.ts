@@ -1,5 +1,5 @@
 import type { NS } from "@ns";
-import { get_servers } from "/util/get_servers";
+import { get_servers, get_servers_available } from "/util/get_servers";
 
 export type Info = {
   target:string,
@@ -27,7 +27,7 @@ export function server_check(ns:NS, target:string):boolean {
 }
 
 export function requirement_check(ns:NS, target: string): boolean{
-  const host = get_servers(ns)
+  const host = get_servers_available(ns)
     // .filter(val=>val!=='home')
     .map(ns.getServerMaxRam)
   const max_ram = Math.max(...host)
@@ -56,7 +56,8 @@ export function get_info(ns:NS, target: string): Info {
   const hack_amount = ns.hackAnalyze(target)
   const hackThread = Math.ceil(hack_ratio / hack_amount)
 
-  const multiplier = 1/(1-hackThread*hack_amount)
+  let multiplier = 1/(1-hackThread*hack_amount)
+  if (Number.isNaN(multiplier)){multiplier = ns.getServerMaxMoney(target)}
   const growThread = Math.ceil(ns.growthAnalyze(target, multiplier))
 
   const security_inc = ns.hackAnalyzeSecurity(hackThread,target) + ns.growthAnalyzeSecurity(growThread, target)

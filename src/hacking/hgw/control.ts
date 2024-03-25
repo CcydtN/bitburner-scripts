@@ -1,6 +1,6 @@
 import type { NS } from "@ns";
 import { get_servers, get_servers_available } from "/util/get_servers";
-import { requirement_check, server_check } from "/hacking/hwgw/common";
+import { requirement_check, server_check } from "/hacking/hgw/common";
 
 const scripts = [
   "./hack.js",
