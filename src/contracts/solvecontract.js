@@ -381,7 +381,7 @@ export async function main(ns) {
 			// }
 
 			//Simplified version. d < distance[yN][xN] should never happen for BFS if d != infinity, so we skip changeweight and simplify implementation
-			//algo always expands shortest path, distance != infinity means a <= lenght path reaches it, only remaining case to solve is infinity    
+			//algo always expands shortest path, distance != infinity means a <= length path reaches it, only remaining case to solve is infinity    
 			queue.push([0, 0]);
 			while (queue.length > 0) {
 				const [y, x] = queue.shift()

@@ -51,7 +51,7 @@ export function force_dispatch(ns:NS, script:string, ideal_thread: number, ...ar
 
 export function hgw_dispatch(ns:NS, script:string, thread: number, ...args: ScriptArg[]) : DispatchResult{
   let servers = get_servers_with_ram(ns)
-  servers = servers.filter((val)=>val.host!=="home")
+  // servers = servers.filter((val)=>val.host!=="home")
   const server = servers.find((val)=> ns.getScriptRam(script)* thread <= val.ram)
 
   if (server === undefined) { return {pid:0, host:"", thread:1} }

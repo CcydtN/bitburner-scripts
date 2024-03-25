@@ -7,7 +7,7 @@ export async function main(ns: NS): Promise<void> {
 
   while (ns.getPurchasedServers().length < ns.getPurchasedServerLimit()) {
     const money = ns.getServerMoneyAvailable("home");
-    if (money >= cost * 10) { ns.purchaseServer("infra",base_ram); }
+    if (money >= cost) { ns.purchaseServer("infra",base_ram); }
     await ns.sleep(1000)
   }
 
@@ -18,7 +18,7 @@ export async function main(ns: NS): Promise<void> {
     const idx = rams.findIndex((val)=> val===min_ram)
     const cost = ns.getPurchasedServerUpgradeCost(servers[idx], rams[idx] * 2)
 
-    while (ns.getServerMoneyAvailable("home") < cost * 10) {
+    while (ns.getServerMoneyAvailable("home") < cost) {
       await ns.sleep(1000)
     }
     if (ns.upgradePurchasedServer(servers[idx], min_ram*2)){

@@ -29,7 +29,7 @@ export async function main(ns:NS) {
   ns.disableLog('getServerMaxRam')
   ns.disableLog('getServerUsedRam')
   ns.disableLog('ALL')
-  let target = ""
+  let target = undefined
 
   // read only, don't write
   const target_port = ns.getPortHandle(1)
@@ -79,7 +79,8 @@ export async function main(ns:NS) {
 
     // if the hack level upgrade, the duration will be different
     // compute the compensation for that (P.S. duration < last_duration)
-    const compensation = Math.max(0, last_duration - duration)
+    let compensation = Math.max(0, last_duration - duration)
+    if (Number.isNaN(compensation)){compensation = 0}
     await ns.sleep(compensation)
 
     const process_id = inorder_dispatch(ns, tasks, delay)

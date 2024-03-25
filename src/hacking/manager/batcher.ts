@@ -66,8 +66,8 @@ function task(ns: NS, target: string, min_level:number, max_money:number) {
       pid = force_dispatch(ns, script, thread, target).pid;
   } else if (ns.getServerMaxMoney(target) !== max_money) {
       const script = "./grow.js";
-      const multipler = max_money / ns.getServerMoneyAvailable(target);
-      const thread = Math.ceil(ns.growthAnalyze(target, multipler));
+      const multiplier = max_money / ns.getServerMoneyAvailable(target);
+      const thread = Math.ceil(ns.growthAnalyze(target, multiplier));
 
       idle = ns.getGrowTime(target);
       pid = force_dispatch(ns, script, thread, target).pid;

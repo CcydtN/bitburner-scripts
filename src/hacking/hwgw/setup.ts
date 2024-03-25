@@ -20,7 +20,7 @@ export async function main(ns: NS): Promise<void> {
   ns.disableLog('getServerMaxRam')
   ns.disableLog('getServerUsedRam')
 
-  if (ns.args.length !== 1) {throw "not enought args"}
+  if (ns.args.length !== 1) {throw "not enough args"}
   const target = ns.args[0].toString()
 
   let idle = 0
@@ -39,8 +39,8 @@ export async function main(ns: NS): Promise<void> {
         pid = force_dispatch(ns, script, thread, target, 0).pid;
     } else if (ns.getServerMaxMoney(target) !== max_money) {
         const script = "./grow.js";
-        const multipler = max_money / ns.getServerMoneyAvailable(target);
-        const thread = Math.ceil(ns.growthAnalyze(target, multipler));
+        const multiplier = max_money / ns.getServerMoneyAvailable(target);
+        const thread = Math.ceil(ns.growthAnalyze(target, multiplier));
 
         idle = ns.getGrowTime(target);
         pid = force_dispatch(ns, script, thread, target, 0).pid;

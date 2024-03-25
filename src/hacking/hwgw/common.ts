@@ -28,7 +28,7 @@ export function server_check(ns:NS, target:string):boolean {
 
 export function requirement_check(ns:NS, target: string): boolean{
   const host = get_servers(ns)
-    .filter(val=>val!=='home')
+    // .filter(val=>val!=='home')
     .map(ns.getServerMaxRam)
   const max_ram = Math.max(...host)
   const total_ram = host.reduce((acc,val)=>acc+val, 0)
@@ -37,18 +37,28 @@ export function requirement_check(ns:NS, target: string): boolean{
   if (max_ram < ns.getScriptRam("./grow.js") * info.growThread) {
     return false
   }
-  const total_thread = info.growThread + info.hackThread + info.weakenThread
-  const duration = Math.max(info.growTime, info.hackTime, info.weakenTime)
-  const batch_count = (duration / 50)
-  if (1.7 * total_thread * batch_count < 0.95 * total_ram) {
+
+  let batch_ram = ns.getScriptRam("./grow.js") * info.growThread
+  batch_ram += ns.getScriptRam("./weaken.js") * info.weakenThread
+  batch_ram += ns.getScriptRam("./hack.js") * info.hackThread
+  batch_ram += ns.getScriptRam("./info.js")
+
+  const duration = Math.max(info.growTime, info.hackTime, info.weakenTime) + 3*GAP
+  const batch_count = (duration / (4 * GAP))
+  if (batch_ram * batch_count < total_ram) {
     return false
   }
   return true
 }
 
 export function get_info(ns:NS, target: string): Info {
-  const hackThread = Math.ceil(0.9 / ns.hackAnalyze(target))
-  const growThread = Math.ceil(ns.growthAnalyze(target, 10))
+  const hack_ratio = 0.9
+  const hack_amount = ns.hackAnalyze(target)
+  const hackThread = Math.ceil(hack_ratio / hack_amount)
+
+  const multiplier = 1/(1-hackThread*hack_amount)
+  const growThread = Math.ceil(ns.growthAnalyze(target, multiplier))
+
   const security_inc = ns.hackAnalyzeSecurity(hackThread,target) + ns.growthAnalyzeSecurity(growThread, target)
   const weakenThread = Math.ceil(security_inc / ns.weakenAnalyze(1))
 

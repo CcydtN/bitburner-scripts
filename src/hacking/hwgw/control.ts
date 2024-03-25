@@ -12,9 +12,10 @@ const scripts = [
 ]
 
 export async function main(ns: NS): Promise<void> {
+  ns.disableLog("ALL")
   let pending :Map<string,number> = new Map()
   let ready:Map<string,number> = new Map()
-  let last = ""
+  let last = undefined
   const port = ns.getPortHandle(1)
 
   const hwg_pid= ns.run('./hgw.js', 1)
@@ -58,6 +59,7 @@ export async function main(ns: NS): Promise<void> {
     const new_target = [...ready.keys()][ready.size-1]
     if ( new_target !== last) {
       port.write(new_target)
+      ns.printf("New target: %s", new_target)
       last = new_target
     }
 
