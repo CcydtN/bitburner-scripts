@@ -2,20 +2,6 @@ import type { NS } from "@ns";
 import { force_dispatch } from "util/dispatcher";
 import { get_servers_available } from "/util/get_servers";
 
-// loop forever {
-//     if security is not minimum {
-//         determine how many threads we need to lower security to the minimum
-//         find available ram for those threads
-//         copy the weaken script to the server(s) with RAM
-//         launch the weaken script(s)
-//         sleep until weaken is finished
-//     } else if money is not maximum {
-//         do the same thing, but with the grow script
-//     } else {
-//         do the same thing, but with the hack script
-//     }
-// }
-
 let process_id :number[]= []
 const queue:(()=>void)[] = []
 
@@ -25,7 +11,9 @@ export async function main(ns: NS): Promise<void> {
   ns.disableLog('getServerUsedRam')
 
   const scripts = ["./weaken.js", "./grow.js", "./hack.js"]
-  ns.atExit(()=>{for (const pid of process_id){ns.kill(pid)}})
+  ns.atExit(()=>{
+    for (const pid of process_id){ns.kill(pid)}
+  })
 
   const on_going = new Set()
 
@@ -50,7 +38,7 @@ export async function main(ns: NS): Promise<void> {
     }
     process_id = process_id.filter(val=> ns.isRunning(val))
 
-    await ns.sleep(1000)
+    await ns.sleep(100)
   }
 }
 

@@ -1,7 +1,6 @@
 import type { NS } from "@ns";
-import { get_ram } from "util/dispatcher";
 
-const base_ram = 8
+const base_ram = 4
 export async function main(ns: NS): Promise<void> {
   const cost = ns.getPurchasedServerCost(base_ram)
 
@@ -18,7 +17,7 @@ export async function main(ns: NS): Promise<void> {
     const idx = rams.findIndex((val)=> val===min_ram)
     const cost = ns.getPurchasedServerUpgradeCost(servers[idx], rams[idx] * 2)
 
-    while (ns.getServerMoneyAvailable("home") < cost) {
+    while (ns.getServerMoneyAvailable("home") < cost*10) {
       await ns.sleep(1000)
     }
     if (ns.upgradePurchasedServer(servers[idx], min_ram*2)){
