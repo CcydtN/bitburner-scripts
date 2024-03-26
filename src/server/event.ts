@@ -30,7 +30,7 @@ export namespace server{
   // biome-ignore lint/nursery/useAwait: <explanation>
   async function buy_server(sys:EventSystem){
     const name = sys.ns.purchaseServer("infra",base_ram)
-    if (name === "") {
+    if (name !== "") {
       sys.ns.printf("Purchase Server, %s", name)
     }
   }

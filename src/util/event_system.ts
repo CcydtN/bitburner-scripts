@@ -23,6 +23,7 @@ export class EventSystem {
   private oneshot_triggers: Map<Condition, Message[]>
   // pid management
   private process_ids:Map<number, Handler[]>
+  private debug = false
 
   constructor(ns: NS, ...ports: NetscriptPort[]) {
     this.ns = ns
@@ -47,6 +48,9 @@ export class EventSystem {
       for (const func of entry) { func(this) }
     })
   }
+
+  set_debug(){this.debug = true}
+  reset_debug(){this.debug = false}
 
   async loop(sleep_ms: number) {
     while (true) {
@@ -117,7 +121,7 @@ export class EventSystem {
   private async message_handler(msg:number, args:Args){
     const entry = this.event_table.get(msg)
     if (entry === undefined) {
-      this.ns.print("Undefind event number, %d", msg)
+      this.ns.printf("Undefind event number, %d", msg)
       return
     }
     for (const func of entry){
@@ -139,7 +143,7 @@ export class EventSystem {
 
   // subprocess management
   manage_subprocess(pid:number, ...hooks:Handler[]) {
-    this.ns.printf("Managing subprocess pid, %d", pid)
+    if(this.debug){this.ns.printf("Managing subprocess pid, %d", pid)}
     if (!this.process_ids.has(pid)){
       this.process_ids.set(pid, [])
     }
@@ -151,7 +155,7 @@ export class EventSystem {
   private async subprocess_exit_hook() {
     for (const [pid, vec] of this.process_ids.entries()){
       if (this.ns.isRunning(pid)) {continue }
-      this.ns.printf("pid %d exit", pid)
+      if (this.debug){this.ns.printf("pid %d exit", pid)}
       this.process_ids.delete(pid)
       for (const func of vec){ await func(this) }
     }

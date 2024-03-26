@@ -28,7 +28,7 @@ export function server_check(ns:NS, target:string):boolean {
 
 export function requirement_check(ns:NS, target: string): boolean{
   const host = get_servers_available(ns)
-    // .filter(val=>val!=='home')
+    .filter(val=>val!=='home')
     .map(ns.getServerMaxRam)
   const max_ram = Math.max(...host)
   const total_ram = host.reduce((acc,val)=>acc+val, 0)

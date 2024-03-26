@@ -51,7 +51,7 @@ export async function main(ns: NS): Promise<void> {
     )
   }
 
-  await sys.loop(5)
+  await sys.loop(100)
 }
 
 function weaken_check(ns:NS, target:string, pending: Set<string>):boolean {

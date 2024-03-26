@@ -8,6 +8,7 @@ export async function main(ns: NS): Promise<void> {
   ns.disableLog("ALL")
   const sys = new EventSystem(ns)
   // sys.on_exit((s)=>{s.ns.run(ns.getScriptName())})
+  sys.set_debug()
 
   resource.register(sys)
   server.register(sys)
@@ -20,10 +21,22 @@ export async function main(ns: NS): Promise<void> {
   sys.trigger_once(home_ram_check(64), create_msg(Event.start_script, '/contracts/main.js'))
 
   sys.trigger_once(on_boot, create_msg(Event.start_script, '/hacking/manager/main.js'))
+  sys.trigger_once(server_check(64), create_msg(Event.switch_script, '/hacking/manager/main.js', '/hacking/better_hgw/main.js'))
 
   await sys.loop(1000)
 }
 
-function home_ram_check(amount:number) : Condition{
-  return (ns:NS)=> ns.getServerMaxRam('home') >= amount
+function home_ram_check(ram_amount:number) : Condition{
+  return (ns:NS)=> ns.getServerMaxRam('home') >= ram_amount
 }
+
+function server_check(ram_amount:number):Condition{
+  return (ns:NS)=> {
+    const servers = ns.getPurchasedServers()
+    if (servers.length < ns.getPurchasedServerLimit()) { return false}
+    return ns.getPurchasedServers()
+      .map(ns.getServerMaxRam)
+      .every(val => val >= ram_amount)
+  }
+}
+
