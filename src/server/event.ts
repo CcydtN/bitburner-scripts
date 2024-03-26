@@ -40,7 +40,7 @@ export namespace server{
     const rams = servers.map(sys.ns.getServerMaxRam)
     const min_ram = Math.min(...rams)
     const idx = rams.findIndex((x)=> x<=min_ram)
-    const success= sys.ns.upgradePurchasedServer(servers[idx], rams[idx])
+    const success= sys.ns.upgradePurchasedServer(servers[idx], rams[idx] * 2)
     if (success) {
       sys.ns.printf("Upgrade Server, %s (%d)", servers[idx], rams[idx]*2)
     }
