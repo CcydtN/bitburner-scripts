@@ -5,6 +5,7 @@ const script = "./share.js"
 
 export async function main(ns: NS): Promise<void> {
   const servers = get_servers(ns)
+    .filter(x => x!=="home")
     .filter(x=>ns.hasRootAccess(x))
     .filter(x=> ns.getServerMaxRam(x))
 

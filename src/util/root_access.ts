@@ -21,7 +21,7 @@ function gain_root(ns:NS, target:string):boolean{
 export async function main(ns: NS): Promise<void> {
   ns.disableLog("scan")
   const done = new Set()
-  const pending = new Set(get_servers(ns))
+  const pending:Set<string> = new Set(get_servers(ns))
 
   while (pending.size !== 0) {
     for (const item of pending.values()) {

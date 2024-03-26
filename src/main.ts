@@ -16,9 +16,10 @@ export async function main(ns: NS): Promise<void> {
   server.add_trigger(sys)
   file_sync.add_trigger(sys)
   sys.trigger_once(on_boot, create_msg(Event.start_script, '/util/root_access.js'))
-  sys.trigger_once(on_boot, create_msg(Event.start_script, '/hacking/manager/main.js'))
   sys.trigger_once(on_boot, create_msg(Event.start_script, '/hacknet/simple.js'))
-  sys.trigger_once(home_ram_check(64), create_msg(Event.start_script, '/contract/main.js'))
+  sys.trigger_once(home_ram_check(64), create_msg(Event.start_script, '/contracts/main.js'))
+
+  sys.trigger_once(on_boot, create_msg(Event.start_script, '/hacking/manager/main.js'))
 
   await sys.loop(1000)
 }
