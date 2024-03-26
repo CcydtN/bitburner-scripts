@@ -29,7 +29,10 @@ export namespace server{
   // handle function
   // biome-ignore lint/nursery/useAwait: <explanation>
   async function buy_server(sys:EventSystem){
-    sys.ns.purchaseServer("infra",base_ram)
+    const name = sys.ns.purchaseServer("infra",base_ram)
+    if (name === "") {
+      sys.ns.printf("Purchase Server, %s", name)
+    }
   }
 
   async function upgrade_server(sys:EventSystem) {
@@ -37,7 +40,10 @@ export namespace server{
     const rams = servers.map(sys.ns.getServerMaxRam)
     const min_ram = Math.min(...rams)
     const idx = rams.findIndex((x)=> x<=min_ram)
-    sys.ns.upgradePurchasedServer(servers[idx], rams[idx])
+    const success= sys.ns.upgradePurchasedServer(servers[idx], rams[idx])
+    if (success) {
+      sys.ns.printf("Upgrade Server, %s (%d)", servers[idx], rams[idx]*2)
+    }
   }
 
   export function register(sys:EventSystem){
