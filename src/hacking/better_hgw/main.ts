@@ -41,6 +41,16 @@ const ready :string[] = []
 
 const cooldown: Map<string, number> = new Map()
 
+// setup server => trigger new item trigger
+
+// no feedback from info
+// cause we have the duration
+// trigger all batch at once
+
+// wait for the duration
+// then go for another target, can not be the same one
+// 
+
 export async function main(ns: NS): Promise<void> {
   ns.disableLog("ALL")
   ns.clearPort(1)
