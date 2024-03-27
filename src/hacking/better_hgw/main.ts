@@ -1,6 +1,6 @@
 import type { NS } from "@ns";
 import { EventSystem, always, create_msg } from "/util/event_system";
-import { hgw_dispatch } from '/util/dispatcher';
+import { dispatch } from '/util/dispatcher';
 import { get_servers } from "/util/get_servers";
 import { Message, GAP, compute_strategy, type Info } from "/hacking/better_hgw/common";
 
@@ -195,7 +195,7 @@ function inorder_dispatch(ns:NS, tasks:Task[], delay: number[]):number[]{
   const process_id:number[] = []
   for (let i = 0; i < count;i++){
     const {script, thread, target} = tasks[i]
-    const result = hgw_dispatch(ns, script, thread, target, delay[i])
+    const result = dispatch(ns, script, thread, target, delay[i])
     if (result.pid === 0){
       ns.print("Fail to dispatch, canceling")
       for (const pid of process_id){ ns.kill(pid) }

@@ -18,7 +18,8 @@ export function get_ram(ns:NS , host:string){
 
 function get_servers_with_ram(ns:NS) {
   const servers = get_servers_available(ns)
-  const infos: ServerInfo[] = servers.map((val)=> { return {host: val, ram:get_ram(ns, val)} })
+  const infos: ServerInfo[] = servers
+    .map((host)=> { return {host: host , ram: get_ram(ns, host)} })
   return infos.sort((a,b)=> a.ram - b.ram)
 }
 
@@ -49,13 +50,18 @@ export function force_dispatch(ns:NS, script:string, ideal_thread: number, ...ar
   return {pid:pid, host:server.host, thread: thread}
 }
 
-export function hgw_dispatch(ns:NS, script:string, thread: number, ...args: ScriptArg[]) : DispatchResult{
-  let servers = get_servers_with_ram(ns)
-  // servers = servers.filter((val)=>val.host!=="home")
+export function dispatch(ns:NS, script:string, thread: number, ...args: ScriptArg[]) : number{
+  const servers = get_servers_with_ram(ns)
+    // .filter((val)=>val.host!=="home")
   const server = servers.find((val)=> ns.getScriptRam(script)* thread <= val.ram)
+  if (server === undefined) { return 0 }
+  return ns.exec(script, server.host, thread, ...args)
+}
 
-  if (server === undefined) { return {pid:0, host:"", thread:1} }
-
-  const pid = ns.exec(script, server.host, thread, ...args)
-  return {pid:pid, host:server.host, thread: thread}
+export function dispatch_not_home(ns:NS, script:string, thread: number, ...args: ScriptArg[]) : number{
+  const servers = get_servers_with_ram(ns)
+    .filter((val)=>val.host!=="home")
+  const server = servers.find((val)=> ns.getScriptRam(script)* thread <= val.ram)
+  if (server === undefined) { return 0 }
+  return ns.exec(script, server.host, thread, ...args)
 }

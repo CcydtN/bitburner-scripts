@@ -21,7 +21,7 @@ export async function main(ns: NS): Promise<void> {
   sys.trigger_once(home_ram_check(64), create_msg(Event.start_script, '/contracts/main.js'))
 
   sys.trigger_once(on_boot, create_msg(Event.start_script, '/hacking/manager/main.js'))
-  sys.trigger_once(server_check(64), create_msg(Event.switch_script, '/hacking/manager/main.js', '/hacking/better_hgw/main.js'))
+  sys.trigger_once(server_check(64), create_msg(Event.switch_script, '/hacking/manager/main.js', '/hacking/simple_hwgw/main.js'))
 
   await sys.loop(1000)
 }
