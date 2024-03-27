@@ -32,6 +32,7 @@ export namespace server{
     const name = sys.ns.purchaseServer("infra",base_ram)
     if (name !== "") {
       sys.ns.printf("Purchase Server, %s", name)
+      buy_server(sys)
     }
   }
 
@@ -43,6 +44,7 @@ export namespace server{
     const success= sys.ns.upgradePurchasedServer(servers[idx], rams[idx] * 2)
     if (success) {
       sys.ns.printf("Upgrade Server, %s (%d)", servers[idx], rams[idx]*2)
+      upgrade_server(sys)
     }
   }
 

@@ -16,10 +16,12 @@ export async function main(ns: NS): Promise<void> {
   while(true) {
     const min_level = ns.getServerMinSecurityLevel(target)
     const max_money= ns.getServerMaxMoney(target)
+    const diff = ns.getServerSecurityLevel(target) - min_level;
+
     if (ns.getServerSecurityLevel(target) !== min_level) {
         const script = "./weaken.js";
-        const diff = ns.getServerSecurityLevel(target) - min_level;
-        const thread = Math.ceil(diff / ns.weakenAnalyze(1));
+        let thread = 1;
+        for (;ns.weakenAnalyze(thread)<=diff; thread+=1)
 
         idle = ns.getWeakenTime(target);
         pid = force_dispatch(ns, script, thread, target, 0).pid;

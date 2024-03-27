@@ -5,7 +5,7 @@ import { type HWGWInfo, Message, compute_strategy, INTERVAL} from "/hacking/simp
 import { hwgw } from "/hacking/simple_hwgw/hwgw"
 
 let last_time = 0
-const time_factor = 0.9;
+const time_factor = 0.95;
 
 const ready :Set<string> = new Set()
 const blacklist: Map<string, number> = new Map()
@@ -86,10 +86,6 @@ function pick_strategy(sys:EventSystem) {
     pick = info
   }
 
-  if (pick === undefined) {
-    return
-  }
-
   last_time = Date.now()
   current_pick = pick
 }
@@ -111,8 +107,11 @@ function print_info(sys:EventSystem) {
   sys.ns.print("---")
   // sys.ns.printf("Ready list: %s", ready.toString())
   // sys.ns.printf(" ")
-  // sys.ns.printf("Black list: %s", [...blacklist.keys()].toString())
-  // sys.ns.printf(" ")
+  sys.ns.printf("Black list:", )
+  for(const item of [...blacklist.keys()]){
+    sys.ns.printf("%s", item)
+  }
+  sys.ns.print("---")
   const now = Date.now()
   const period = current_pick===undefined?0:current_pick.period
   const countdown = (last_time + period * time_factor) - now

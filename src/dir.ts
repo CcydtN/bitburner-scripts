@@ -7,6 +7,7 @@ const facServers:{[server:string]:boolean} = {
     "avmnite-02h": true,
     "I.I.I.I": true,
     run4theh111z: true,
+    w0r1d_d43m0n: true
 };
 // Custom color coding.
 const cyan = "\u001b[36m";
