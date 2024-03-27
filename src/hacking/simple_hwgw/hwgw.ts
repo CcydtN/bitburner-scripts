@@ -69,8 +69,8 @@ function compute_delay(period:number, tasks:number[]) :TaskInfo<number> {
 function execute_batch(ns :NS, target:string ,scripts:TaskInfo<string>, delays:TaskInfo<number>, threads:TaskInfo<number>): number[]{
   const result = []
   for (let i = 0; i < 4; i++) {
-    // const pid = dispatch(ns, scripts[i], threads[i], target, delays[i])
-    const pid = dispatch_not_home(ns, scripts[i], threads[i], target, delays[i])
+    const pid = dispatch(ns, scripts[i], threads[i], target, delays[i])
+    // const pid = dispatch_not_home(ns, scripts[i], threads[i], target, delays[i])
     if (pid === 0) {
       ns.print("Fail to dispatch")
       for (const id of result) {ns.kill(id)}

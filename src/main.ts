@@ -3,6 +3,7 @@ import { type Condition, EventSystem, create_msg, on_boot } from "/util/event_sy
 import { Event, resource } from "/resource";
 import { server } from "/server/event";
 import { file_sync } from "/util/file_sync_event";
+import { get_servers, get_servers_available } from "./util/get_servers";
 
 export async function main(ns: NS): Promise<void> {
   ns.disableLog("ALL")
@@ -21,7 +22,7 @@ export async function main(ns: NS): Promise<void> {
   sys.trigger_once(home_ram_check(64), create_msg(Event.start_script, '/contracts/main.js'))
 
   sys.trigger_once(on_boot, create_msg(Event.start_script, '/hacking/manager/main.js'))
-  sys.trigger_once(server_check(64), create_msg(Event.switch_script, '/hacking/manager/main.js', '/hacking/simple_hwgw/main.js'))
+  sys.trigger_once(total_ram_check(1024), create_msg(Event.switch_script, '/hacking/manager/main.js', '/hacking/simple_hwgw/main.js'))
 
   await sys.loop(1000)
 }
@@ -40,3 +41,10 @@ function server_check(ram_amount:number):Condition{
   }
 }
 
+function total_ram_check(ram_amount:number) : Condition{
+  return (ns:NS)=>{
+    return get_servers_available(ns)
+      .map((name)=>ns.getServerMaxRam(name))
+      .reduce((sum,cur)=>sum+cur, 0) >= ram_amount
+  }
+}

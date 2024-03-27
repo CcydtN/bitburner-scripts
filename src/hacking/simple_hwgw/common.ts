@@ -85,7 +85,7 @@ export function compute_strategy(ns:NS, target: string): HWGWInfo | undefined{
   )
 
   const host = get_servers_available(ns)
-    .filter(val=>val!=='home')
+    // .filter(val=>val!=='home')
     .map((name)=>ns.getServerMaxRam(name))
 
   const max_ram = Math.max(...host)
