@@ -20,8 +20,7 @@ export async function main(ns: NS): Promise<void> {
   await sys.loop(1000)
 }
 
-// biome-ignore lint/nursery/useAwait: <explanation>
-async function start_script(sys:EventSystem, script:string, ...args:ScriptArg[]){
+function start_script(sys:EventSystem, script:string, ...args:ScriptArg[]){
   const pid = sys.ns.run(script)
   if (pid === 0) {
     sys.send_msg(Message.start_script, script, ...args)
