@@ -1,7 +1,7 @@
 import type { NS } from "@ns";
 import { get_servers_available } from "/util/get_servers";
 
-export const INTERVAL = 80
+export const INTERVAL = 50
 
 export type Data<T> = {hack: T, grow: T, weaken: T}
 export function make_data<T>(hack:T,grow:T,weaken:T) : Data<T>{ return {hack,grow,weaken} }
@@ -35,7 +35,7 @@ function compute_grow_threads(ns:NS, target: string, max_money: number, hack_amo
 }
 
 function compute_weaken_threads(ns:NS, target:string, hack_threads:number[], grow_threads:number[]): Data<number[]>{
-  const count = Math.max(...hack_threads, ...grow_threads)
+  const count = Math.max(...hack_threads.slice(-1), ...grow_threads.slice(-1))
 
   const weaken_amount = [...Array(count).keys()].map((i) => ns.weakenAnalyze(i+1))
   

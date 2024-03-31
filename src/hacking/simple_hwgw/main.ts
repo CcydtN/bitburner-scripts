@@ -97,7 +97,7 @@ function hwgw_wrapper(sys:EventSystem){
   }
   blacklist.set(
     current_pick.target,
-    Date.now() + current_pick.period // a little bit more to ensure
+    Date.now() + current_pick.period
   )
   hwgw(sys, current_pick)
 }

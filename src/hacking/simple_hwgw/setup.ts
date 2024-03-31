@@ -27,7 +27,7 @@ export async function main(ns: NS): Promise<void> {
         pid = force_dispatch(ns, script, thread, target, 0).pid;
     } else if (ns.getServerMaxMoney(target) !== max_money) {
         const script = "./grow.js";
-        const multiplier = max_money / ns.getServerMoneyAvailable(target);
+        const multiplier = (max_money / ns.getServerMoneyAvailable(target))||max_money;
         const thread = Math.ceil(ns.growthAnalyze(target, multiplier));
 
         idle = ns.getGrowTime(target);

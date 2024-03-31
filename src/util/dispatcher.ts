@@ -43,7 +43,7 @@ export function force_dispatch(ns:NS, script:string, ideal_thread: number, ...ar
   let thread = ideal_thread
   if (server === undefined) {
     server = servers[servers.length - 1]
-    thread = Math.floor(server.ram / ns.getScriptRam(script))
+    thread = Math.max(1,Math.floor(server.ram / ns.getScriptRam(script)))
   }
 
   const pid = ns.exec(script, server.host, thread, ...args)

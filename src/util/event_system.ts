@@ -56,10 +56,8 @@ export class EventSystem {
     while (true) {
       this.receive_from_port()
       await this.check_trigger()
-      await this.consume_queue()
-
       await this.subprocess_exit_hook()
-
+      await this.consume_queue()
       await this.ns.sleep(sleep_ms)
     }
   }
@@ -103,7 +101,9 @@ export class EventSystem {
       while (true) {
         const data = port.read()
         if (data === "NULL PORT DATA") {break}
-        this.msg_queue.push(data as Message)
+        // this.msg_queue.push(data as Message)
+        const msg = data as Message
+        this.message_handler(msg.msg, msg.args)
       }
     }
   }
@@ -132,12 +132,16 @@ export class EventSystem {
   private async check_trigger() {
     for (const [condition, msgs] of this.triggers.entries()){
       if (! await condition(this.ns)) { continue }
-      this.msg_queue.push(...msgs)
+      for (const item of msgs){
+        await this.message_handler(item.msg, item.args)
+      }
     }
     for (const [condition, msgs] of this.oneshot_triggers.entries()){
       if (! await condition(this.ns)) { continue }
-      this.msg_queue.push(...msgs)
       this.oneshot_triggers.delete(condition)
+      for (const item of msgs){
+        await this.message_handler(item.msg, item.args)
+      }
     }
   }
 
